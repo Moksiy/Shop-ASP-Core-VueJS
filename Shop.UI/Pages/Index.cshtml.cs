@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Shop.Application.Products;
 using Shop.Database;
+using Shop.Application;
+using static Shop.Application.Products.CreateProduct;
 
 namespace Shop.UI.Pages
 {
@@ -19,14 +21,7 @@ namespace Shop.UI.Pages
         }
 
         [BindProperty]
-        public ProductViewModel Product { get; set; }
-
-        public class ProductViewModel
-        {
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public decimal Value { get; set; }
-        }
+        public ProductViewModel Product { get; set; }        
 
         public void OnGet()
         {
@@ -35,7 +30,7 @@ namespace Shop.UI.Pages
 
         public async Task<IActionResult> Onpost()
         {
-            await new CreateProduct(_ctx).Do(Product.Name, Product.Description, Product.Value);
+            await new CreateProduct(_ctx).Do(Product);
 
             return RedirectToPage("Index");
         }
