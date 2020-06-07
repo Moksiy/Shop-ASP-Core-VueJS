@@ -5,26 +5,19 @@ using System.Threading.Tasks;
 using Shop.Database;
 using Shop.Domain.Models;
 
-namespace Shop.Application.CreateProducts
+namespace Shop.Application.ProductsAdmin
 {
-    public class CreateProduct
+    public class UpdateProduct
     {
         private ApplicationDBContext _context;
 
-        public CreateProduct(ApplicationDBContext context)
+        public UpdateProduct(ApplicationDBContext context)
         {
             _context = context;
         }
 
         public async Task Do(ProductViewModel vm)
         {
-            _context.Products.Add(new Product
-            {
-                Name = vm.Name,
-                Description = vm.Description,
-                Value = vm.Value
-            });
-
             await _context.SaveChangesAsync();
         }
 
