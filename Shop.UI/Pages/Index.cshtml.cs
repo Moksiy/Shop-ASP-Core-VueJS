@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Shop.Application.Products;
+using Shop.Application.CreateProducts;
 using Shop.Database;
 using Shop.Application;
-using static Shop.Application.Products.CreateProduct;
+using Shop.Application.GetProducts;
 
 namespace Shop.UI.Pages
 {
@@ -21,11 +21,13 @@ namespace Shop.UI.Pages
         }
 
         [BindProperty]
-        public ProductViewModel Product { get; set; }        
+        public Application.CreateProducts.CreateProduct.ProductViewModel Product { get; set; }        
+
+        public IEnumerable<Application.GetProducts.GetProducts.ProductViewModel> Products { get; set; }
 
         public void OnGet()
         {
-
+            Products = new GetProducts(_ctx).Do();
         }
 
         public async Task<IActionResult> Onpost()

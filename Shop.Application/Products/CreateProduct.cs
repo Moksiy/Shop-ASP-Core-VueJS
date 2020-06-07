@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Shop.Database;
 using Shop.Domain.Models;
 
-namespace Shop.Application.Products
+namespace Shop.Application.CreateProducts
 {
     public class CreateProduct
     {
