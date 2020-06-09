@@ -3,28 +3,30 @@
 @{
 }
 
-    <div id="app">
-        <button v-on:click="getProducts">Get products</button>
+<div id="app" class="container">
 
-        <div>
-            <p v-for="product in products">
-                {{product.id}} - {{product.name}} - {{product.value}}
-            </p>
+    <div class="columns">
+        <div class="column is-3">
+            <div class="menu">
+                <p class="menu-label"> Меню администратора </p>
+                <ul class="menu-list">
+                    <li><a>Товары</a></li>
+                    <li><a>Заказы</a></li>
+                    <li><a>Склад</a></li>
+                </ul>
+            </div>
         </div>
 
-        <div>
-            <input v-model="productModel.name" />
-            <input v-model="productModel.description" />
-            <input v-model.number="productModel.value" />
-            <button @@click="createProduct">Добавить товар</button>
+        <div class="column is-9">
+            <product-manager></product-manager>
         </div>
-
     </div>
-
+</div>
 
 @section scripts
 {
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="~/js/Admin/product-component.js"></script>
     <script src="~/js/Admin/main.js"></script>
 }
