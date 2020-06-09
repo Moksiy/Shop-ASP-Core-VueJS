@@ -20,7 +20,7 @@ namespace Shop.UI.Pages
         }
 
         [BindProperty]
-        public CreateProduct.ProductViewModel Product { get; set; }        
+        public CreateProduct.Request Product { get; set; }        
 
         public IEnumerable<GetProducts.ProductViewModel> Products { get; set; }
 

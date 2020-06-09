@@ -25,8 +25,9 @@ namespace Shop.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
             services.AddRazorPages();
-
+            services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
         }
 
@@ -48,11 +49,12 @@ namespace Shop.UI
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseMvc();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers(); //
                 endpoints.MapRazorPages();
             });
         }
