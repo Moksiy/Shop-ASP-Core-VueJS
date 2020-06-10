@@ -1,65 +1,16 @@
-﻿Vue.component('product-manager', {
-    template: `
-<div v-if="!editing">
-                <button class="button" @click="newProduct">Добавить товар</button>
-                <table class="table">
-                    <tr>
-                        <th>ID</th>
-                        <th>Товар</th>
-                        <th>Цена</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr v-for="(product, index) in products">
-                        <td>{{product.id}}</td>
-                        <td>{{product.name}}</td>
-                        <td>{{product.value}}</td>
-                        <td><a @click="editProduct(product.id, index)">Редактировать</a></td>
-                        <td><a @click="deleteProduct(product.id, index)">Удалить</a></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div v-else>
-                <div class="field">
-                    <label class="label">Название товара</label>
-                    <div class="control">
-                        <input class="input" v-model="productModel.name" />
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Описание товара</label>
-                    <div class="control">
-                        <input class="input" v-model="productModel.description" />
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Цена товара</label>
-                    <div class="control">
-                        <input class="input" v-model="productModel.value" />
-                    </div>
-                </div>
-
-                <button class="button is-success" @click="createProduct" v-if="!productModel.id">Добавить товар</button>
-                <button class="button is-warning" @click="updateProduct" v-else>Редактировать</button>
-                <button class="button" @click="cancel">Выход</button>
-            </div>
-        </div>`,
-    data() {
-        return {
-            editing: false,
-            loading: false,
-            objectIndex: 0,
-            productModel: {
-                id: 0,
-                name: "Product Name",
-                description: "Description",
-                value: 1999.98
-            },
-            products: []
-        }
+﻿var app = new Vue({
+    el: '#app',
+    data: {
+        editing: false,
+        loading: false,
+        objectIndex: 0,
+        productModel: {
+            id: 0,
+            name: "Product Name",
+            description: "Description",
+            value: 1999.98
+        },
+        products: []
     },
     mounted() {
         this.getProducts();

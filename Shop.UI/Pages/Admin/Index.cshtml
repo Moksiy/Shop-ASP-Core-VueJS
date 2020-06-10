@@ -4,29 +4,54 @@
 }
 
 <div id="app" class="container">
-
-    <div class="columns">
-        <div class="column is-3">
-            <div class="menu">
-                <p class="menu-label"> Меню администратора </p>
-                <ul class="menu-list">
-                    <li><a>Товары</a></li>
-                    <li><a>Заказы</a></li>
-                    <li><a>Склад</a></li>
-                </ul>
+    <div v-if="!editing">
+        <button class="button" @@click="newProduct">Добавить товар</button>
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Товар</th>
+                <th>Цена</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr v-for="(product, index) in products">
+                <td>{{product.id}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.value}}</td>
+                <td><a @@click="editProduct(product.id, index)">Редактировать</a></td>
+                <td><a @@click="deleteProduct(product.id, index)">Удалить</a></td>
+            </tr>
+        </table>
+    </div>
+    <div v-else>
+        <div class="field">
+            <label class="label">Название товара</label>
+            <div class="control">
+                <input class="input" v-model="productModel.name" />
             </div>
         </div>
-
-        <div class="column is-9">
-            <product-manager></product-manager>
+        <div class="field">
+            <label class="label">Описание товара</label>
+            <div class="control">
+                <input class="input" v-model="productModel.description" />
+            </div>
         </div>
+        <div class="field">
+            <label class="label">Цена товара</label>
+            <div class="control">
+                <input class="input" v-model="productModel.value" />
+            </div>
+        </div>
+        <button class="button is-success" @@click="createProduct" v-if="!productModel.id">Добавить товар</button>
+        <button class="button is-warning" @@click="updateProduct" v-else>Редактировать</button>
+        <button class="button" @@click="cancel">Выход</button>
     </div>
 </div>
+
 
 @section scripts
 {
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="~/js/Admin/product-component.js"></script>
-    <script src="~/js/Admin/main.js"></script>
+    <script src="~/js/Admin/products.js"></script>
 }
