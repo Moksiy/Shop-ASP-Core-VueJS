@@ -4,11 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Shop.UI</title>
-    <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/lib/bulma-0.9.0/css/bulma.css" rel="stylesheet" />
 </head>
 <body>
-    <h3 class="has-text-centered">Панель администратора</h3>
+    <h3 class="title has-text-centered">Панель администратора</h3>
 
     <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
 
@@ -42,9 +41,8 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
