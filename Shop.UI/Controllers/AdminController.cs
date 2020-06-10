@@ -12,7 +12,7 @@ namespace Shop.UI.Controllers
     [Route("[controller]")]
     public class AdminController : Controller
     {
-        private ApplicationDBContext _ctx;
+        private readonly ApplicationDBContext _ctx;
 
         public AdminController(ApplicationDBContext ctx)
         {

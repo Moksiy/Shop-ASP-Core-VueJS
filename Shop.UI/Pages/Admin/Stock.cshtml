@@ -25,7 +25,7 @@
             </a>
         </div>
         <div class="column is-3" v-if="selectedProduct">
-            <h2 class="title">Новый склад</h2>
+            <h2 class="title">Новый сток</h2>
             <div class="field">
                 <div class="control">
                     <input class="input" v-model="newStock.description" />
@@ -33,7 +33,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input" v-model="newStock.qty" />
+                    <input class="input" v-model.number="newStock.qty" />
                 </div>
             </div>
             <a class="button is-success" @@click="addStock">Добавить</a>

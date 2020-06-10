@@ -9,7 +9,7 @@ namespace Shop.Application.ProductsAdmin
 {
     public class CreateProduct
     {
-        private ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
 
         public CreateProduct(ApplicationDBContext context)
         {
