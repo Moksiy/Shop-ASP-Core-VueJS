@@ -9,7 +9,7 @@ namespace Shop.Application.StockAdmin
 {
     public class UpdateStock
     {
-        private ApplicationDBContext _ctx;
+        private readonly ApplicationDBContext _ctx;
 
         public UpdateStock(ApplicationDBContext ctx)
         {

@@ -1,0 +1,23 @@
+﻿@page "{name}"
+@model Shop.UI.Pages.ProductModel
+@{
+}
+
+<div>
+    <p>@Model.Product.Name</p>
+    <p>@Model.Product.Description</p>
+    <p>@Model.Product.Value</p>
+
+    <div>
+        <form method="post">
+            <label>Наличие</label>
+            <select asp-for="ProductTest.ID">
+                @foreach (var s in Model.Product.Stock)
+                {
+                    <option value="@s.ID">@s.Description</option>
+                }
+            </select>
+            <button type="submit">Подтвердить</button>
+        </form>
+    </div>
+</div>

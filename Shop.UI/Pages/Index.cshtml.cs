@@ -13,7 +13,7 @@ namespace Shop.UI.Pages
 {
     public class IndexModel : PageModel
     {
-        private ApplicationDBContext _ctx;
+        private readonly ApplicationDBContext _ctx;
         public IndexModel(ApplicationDBContext ctx)
         {
             _ctx = ctx;

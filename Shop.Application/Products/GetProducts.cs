@@ -8,7 +8,7 @@ namespace Shop.Application.Products
 {
     public class GetProducts
     {
-        private ApplicationDBContext _ctx;
+        private readonly ApplicationDBContext _ctx;
 
         public GetProducts(ApplicationDBContext ctx)
         {

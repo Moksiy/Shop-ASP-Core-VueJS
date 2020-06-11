@@ -10,7 +10,7 @@ namespace Shop.Application.StockAdmin
 {
     public class DeleteStock
     {
-        private ApplicationDBContext _ctx;
+        private readonly ApplicationDBContext _ctx;
 
         public DeleteStock(ApplicationDBContext ctx)
         {
