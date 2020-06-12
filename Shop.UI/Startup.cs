@@ -32,8 +32,7 @@ namespace Shop.UI
             services.AddSession(options =>
             {
                 options.Cookie.Name = "Cart";
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.IsEssential = true;
+                options.Cookie.MaxAge = TimeSpan.FromDays(365);
             });
 
             services.AddControllersWithViews();

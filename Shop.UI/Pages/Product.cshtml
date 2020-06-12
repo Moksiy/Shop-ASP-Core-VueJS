@@ -11,13 +11,16 @@
     <div>
         <form method="post">
             <label>Наличие</label>
-            <select asp-for="ProductTest.ID">
+            <select asp-for="CartViewModel.StockID">
                 @foreach (var s in Model.Product.Stock)
                 {
                     <option value="@s.ID">@s.Description</option>
                 }
             </select>
+            <label>Qty:</label>
+            <input asp-for="CartViewModel.Qty" />
             <button type="submit">Подтвердить</button>
         </form>
     </div>
 </div>
+@await Component.InvokeAsync("Cart")
