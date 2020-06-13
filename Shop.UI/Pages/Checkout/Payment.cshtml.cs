@@ -19,5 +19,10 @@ namespace Shop.UI.Pages.Checkout
             else
                 return Page();
         }
+
+        public IActionResult OnPost(string email, string token)
+        {
+            return RedirectToPage("/Index");
+        }
     }
 }

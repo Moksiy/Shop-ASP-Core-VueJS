@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shop.Database;
 using Shop.UI.Middleware;
+using Stripe;
 
 namespace Shop.UI
 {
@@ -37,6 +38,7 @@ namespace Shop.UI
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
