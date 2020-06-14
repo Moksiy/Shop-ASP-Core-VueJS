@@ -54,16 +54,23 @@ namespace Shop.Application.Cart
 
             var cartList = JsonConvert.DeserializeObject<List<CartProduct>>(cart);
 
+            var itemsInList = cartList.Select(x => x.StockID).ToList();
+
             var listOfProducts = _ctx.Stock
                 .Include(x => x.Product)
-                .Where(x => cartList.Any(y => y.StockID == x.ID))
+                .Where(x => itemsInList.Contains(x.ID))
                 .Select(x => new Product
                 {
                     ProductID = x.ProductID,
                     StockID = x.ID,
                     Value = (int)(x.Product.Value * 100),
-                    Qty = cartList.FirstOrDefault(y => y.StockID == x.ID).Qty
                 }).ToList();
+
+            listOfProducts = listOfProducts.Select(x =>
+            {
+                x.Qty = cartList.FirstOrDefault(y => y.StockID == x.StockID).Qty;
+                return x;
+            }).ToList();
 
             var customerInfoString = _session.GetString("customer-info");
 
