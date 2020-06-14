@@ -30,7 +30,7 @@ namespace Shop.UI.Pages.Checkout
 
         public async Task<IActionResult> OnPost()
         {
-            var CartOrder = new GetOrder(HttpContext.Session, _ctx).Do();
+            var CartOrder = new Application.Cart.GetOrder(HttpContext.Session, _ctx).Do();
 
             await new CreateOrder(_ctx).Do(new CreateOrder.Request
             {              

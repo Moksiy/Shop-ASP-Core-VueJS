@@ -1,35 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
 using Shop.Database;
-using Shop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Shop.Application.Cart
+namespace Shop.Application.Orders
 {
     public class GetOrder
     {
-        private readonly ISession _session;
         private readonly ApplicationDBContext _ctx;
 
-        public GetOrder(ISession session, ApplicationDBContext ctx)
+        public GetOrder(ApplicationDBContext ctx)
         {
-            _session = session;
             _ctx = ctx;
         }
 
         public class Response
         {
-            public IEnumerable<Product> Products { get; set; }
-            public CustomerInformation CustomerInformation { get; set; }
-            public int GetTotalCharge() => Products.Sum(x => x.Value * x.Qty);
-        }
-
-        public class CustomerInformation
-        {
+            public int ID { get; set; }
+            public string OrderRef { get; set; }
+            public string StripeReference { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public string Email { get; set; }
@@ -38,59 +29,48 @@ namespace Shop.Application.Cart
             public string Address2 { get; set; }
             public string City { get; set; }
             public string PostCode { get; set; }
+            public IEnumerable<Product> Products { get; set; }
+            public string TotalValue { get; set; }
         }
 
         public class Product
         {
-            public int ProductID { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public string Value { get; set; }
             public int Qty { get; set; }
-            public int StockID { get; set; }
-            public int Value { get; set; }
+            public string StockDescription { get; set; }
         }
 
-        public Response Do()
-        {
-            var cart = _session.GetString("cart");
-
-            var cartList = JsonConvert.DeserializeObject<List<CartProduct>>(cart);
-
-            var itemsInList = cartList.Select(x => x.StockID).ToList();
-
-            var listOfProducts = _ctx.Stock
-                .Include(x => x.Product)
-                .Where(x => itemsInList.Contains(x.ID))
-                .Select(x => new Product
+        public Response Do(string reference) =>
+                _ctx.Orders
+                .Where(x => x.OrderRef == reference)
+                .Include(x => x.OrderStocks)
+                .ThenInclude(x => x.Stock)
+                .ThenInclude(x => x.Product)
+                .Select(x => new Response
                 {
-                    ProductID = x.ProductID,
-                    StockID = x.ID,
-                    Value = (int)(x.Product.Value * 100),
-                }).ToList();
+                    OrderRef = x.OrderRef,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    PhoneNumber = x.PhoneNumber,
+                    Address1 = x.Address1,
+                    Address2 = x.Address2,
+                    City = x.City,
+                    PostCode = x.PostCode,
+                    Products = x.OrderStocks.Select(y => new Product
 
-            listOfProducts = listOfProducts.Select(x =>
-            {
-                x.Qty = cartList.FirstOrDefault(y => y.StockID == x.StockID).Qty;
-                return x;
-            }).ToList();
+                    {
+                        Name = y.Stock.Product.Name,
+                        Description = y.Stock.Product.Description,
+                        Value = $"{y.Stock.Product.Value:N2}₽",
+                        Qty = y.Qty,
+                        StockDescription = y.Stock.Description
+                    }),
 
-            var customerInfoString = _session.GetString("customer-info");
+                    TotalValue = x.OrderStocks.Sum(y => y.Stock.Product.Value).ToString("N2")
 
-            var customerInformation = JsonConvert.DeserializeObject<Shop.Domain.Models.CustomerInformation>(customerInfoString);
-
-            return new Response
-            {
-                Products = listOfProducts,
-                CustomerInformation = new CustomerInformation
-                {
-                    FirstName = customerInformation.FirstName,
-                    LastName = customerInformation.LastName,
-                    Email = customerInformation.Email,
-                    PhoneNumber = customerInformation.PhoneNumber,
-                    Address1 = customerInformation.Address1,
-                    Address2 = customerInformation.Address2,
-                    City = customerInformation.City,
-                    PostCode = customerInformation.PostCode
-                }
-            };
-        }
+                }).FirstOrDefault();
     }
 }
