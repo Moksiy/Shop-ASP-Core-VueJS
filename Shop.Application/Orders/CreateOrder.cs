@@ -40,13 +40,12 @@ namespace Shop.Application.Orders
 
         public async Task<bool> Do(Request request)
         {
-            //var stocksToUpdate = _ctx.Stock.Where(x => request.Stocks.Any(y => y.StockID == x.ID)).ToList();
             var stocksToUpdate = _ctx.Stock
                                  .Where(x => request.Stocks.Select(y => y.StockID).Contains(x.ID))
                                  .ToList();
 
             foreach (var stock in stocksToUpdate)
-                stock.Qty = stock.Qty - request.Stocks.FirstOrDefault(x => x.StockID == stock.ID).Qty;
+                stock.Qty -= request.Stocks.FirstOrDefault(x => x.StockID == stock.ID).Qty;
 
             var order = new Order
             {
@@ -78,7 +77,6 @@ namespace Shop.Application.Orders
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var result = new char[12];
             var random = new Random();
-
 
             do
             {
