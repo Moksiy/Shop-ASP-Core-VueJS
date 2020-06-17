@@ -32,9 +32,12 @@ namespace Shop.UI.Pages.Checkout
         {
             var CartOrder = new Application.Cart.GetOrder(HttpContext.Session, _ctx).Do();
 
+            var sessionID = HttpContext.Session.Id;
+
             await new CreateOrder(_ctx).Do(new CreateOrder.Request
             {              
                 StripeReference = "",
+                SessionID = sessionID,
                 FirstName = CartOrder.CustomerInformation.FirstName,
                 LastName = CartOrder.CustomerInformation.LastName,
                 Email = CartOrder.CustomerInformation.Email,
