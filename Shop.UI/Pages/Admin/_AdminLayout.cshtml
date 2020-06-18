@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Authorization.IAuthorizationService authService
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,12 +19,19 @@
         <div class="columns">
             <div class="column is-3">
                 <div class="menu">
-                    <p class="menu-label"> Меню администратора </p>
+                    <p class="menu-label"> Меню склада </p>
                     <ul class="menu-list">
                         <li><a asp-page="/Admin/Index">Товары</a></li>
                         <li><a asp-page="/Admin/Orders">Заказы</a></li>
                         <li><a asp-page="/Admin/Stock">Склад</a></li>
                     </ul>
+                    @if ((await authService.AuthorizeAsync(User,null,"Admin")).Succeeded)
+                    {
+                        <p class="menu-label"> Меню администратора </p>
+                        <ul class="menu-list">
+                            <li><a asp-page="/Admin/Index">Пользователи</a></li>
+                        </ul>
+                    }
                     <p class="menu-label"></p>
                     <ul class="menu-list">
                         <li><a asp-page="/Index">Назад</a></li>
