@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shop.Application.OrdersAdmin;
 using Shop.Application.ProductsAdmin;
 using Shop.Application.StockAdmin;
 using Shop.Database;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 namespace Shop.UI.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Policy = "Admin")]
     public class AdminController : Controller
     {
         private readonly ApplicationDBContext _ctx;
@@ -19,7 +22,7 @@ namespace Shop.UI.Controllers
             _ctx = ctx;
         }
 
-        [HttpGet("products")]
+        /*[HttpGet("products")]
         public IActionResult GetProducts() => Ok(new GetProducts(_ctx).Do());
 
         [HttpGet("products/{id}")]
@@ -47,5 +50,15 @@ namespace Shop.UI.Controllers
 
         [HttpPut("stocks")]
         public async Task<IActionResult> UpdateStock([FromBody] UpdateStock.Request request) => Ok((await new UpdateStock(_ctx).Do(request)));
+
+
+        [HttpGet("orders")]
+        public IActionResult GetOrders(int status) => Ok(new GetOrders(_ctx).Do(status));
+
+        [HttpDelete("orders/{id}")]
+        public IActionResult GetOrder(int id) => Ok(new GetOrder(_ctx).Do(id));
+
+        [HttpPut("orders/{id}")]
+        public async Task<IActionResult> UpdateOrder(int id) => Ok((await new UpdateOrder(_ctx).Do(id)));*/
     }
 }
