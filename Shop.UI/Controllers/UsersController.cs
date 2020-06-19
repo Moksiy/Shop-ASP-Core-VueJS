@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Application.OrdersAdmin;
 using Shop.Application.ProductsAdmin;
 using Shop.Application.StockAdmin;
+using Shop.Application.UsersAdmin;
 using Shop.Database;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,20 @@ namespace Shop.UI.Controllers
 {
     [Route("[controller]")]
     [Authorize(Policy = "Admin")]
-    public class AdminController : Controller
+    public class UsersController : Controller
     {
-        private readonly ApplicationDBContext _ctx;
+        private readonly CreateUser _createUser;
 
-        public AdminController(ApplicationDBContext ctx)
+        public UsersController(CreateUser createUser)
         {
-            _ctx = ctx;
+            _createUser = createUser;
+        }
+
+        public async Task<IActionResult> CreateUser([FromBody] CreateUser.Request request)
+        {
+            await _createUser.Do(request);
+
+            return Ok();
         }
 
         /*[HttpGet("products")]

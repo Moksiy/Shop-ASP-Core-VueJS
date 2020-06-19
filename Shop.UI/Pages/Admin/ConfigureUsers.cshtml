@@ -1,0 +1,17 @@
+﻿@page
+@model Shop.UI.Pages.Admin.ConfigureUsersModel
+@{
+}
+
+<div id="app" class="container">
+    <input v-model="username"/>
+    <button @@click="createUser()">Создать</button>
+</div>
+
+
+@section scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="~/js/Admin/users.js"></script>
+}

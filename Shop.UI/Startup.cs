@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Shop.Application.UsersAdmin;
 using Shop.Database;
 using Shop.UI.Middleware;
 using Stripe;
@@ -57,7 +58,9 @@ namespace Shop.UI
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeFolder("/Admin");
-            }).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+                options.Conventions.AuthorizePage("/Admin/ConfigureUsers", "Admin");
+            })
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
             services.AddDistributedMemoryCache();
 
@@ -70,6 +73,7 @@ namespace Shop.UI
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddTransient<CreateUser>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
