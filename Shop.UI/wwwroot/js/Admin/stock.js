@@ -19,6 +19,7 @@
                 .then(res => {
                     console.log(res);
                     this.products = res.data;
+                    console.log(this.products);
                 })
                 .catch(err => {
                     console.log(err.response);

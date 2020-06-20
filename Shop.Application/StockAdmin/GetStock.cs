@@ -46,6 +46,7 @@ namespace Shop.Application.StockAdmin
         public class ProductViewModel
         {
             public int ID { get; set; }
+            //public string Name { get; set; }
             public string Description { get; set; }
             public IEnumerable<StockViewModel> Stock { get; set; }
         }
