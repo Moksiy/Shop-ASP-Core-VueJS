@@ -17,9 +17,7 @@
             this.loading = true;
             axios.get('/stocks')
                 .then(res => {
-                    console.log(res);
                     this.products = res.data;
-                    console.log(this.products);
                 })
                 .catch(err => {
                     console.log(err.response);
@@ -55,7 +53,6 @@
             this.loading = true;
             axios.delete('/stocks/' + id)
                 .then(res => {
-                    console.log(res);
                     this.selectedProduct.stock.splice(index, 1);
                 })
                 .catch(err => {
@@ -69,7 +66,6 @@
             this.loading = true;
             axios.post('/stocks', this.newStock)
                 .then(res => {
-                    console.log(res);
                     this.selectedProduct.stock.push(res.data);
                 })
                 .catch(err => {
