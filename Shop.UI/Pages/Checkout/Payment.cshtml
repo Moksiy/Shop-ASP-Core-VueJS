@@ -3,16 +3,29 @@
 @{
 }
 
-<h2>Payment (еще не завезли)</h2>
-<form method="post">
-    <div>
-        <button>Подтвердить платеж</button>
-        <a class="nav-link text-dark" asp-area="" asp-page="/Index">-Оппа... А это что?     -А это заглушка</a>
-    </div>
-</form>
+<p class="title">Оплата</p>
 
-<hr />
-<a>Fuck the stripe</a>
+<div class="columns">
+    <div class="column is-6">
+
+        <form method="post">
+            <div class="field">
+                <h2>Payment (еще не завезли)</h2>
+                <div>
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">-Оппа... А это что?     -А это заглушка</a>
+                </div>
+            </div>
+            <div class="field">
+                <button asp-page="/Index" class="button is-success">Подтвердить платеж</button>
+            </div>
+        </form>
+    </div>
+    <div class="column is-6">
+        <vc:cart view="Default"></vc:cart>
+    </div>
+    <hr />
+</div>
+
 
 @section scripts{
     <script src="https://js.stripe.com/v3/"></script>

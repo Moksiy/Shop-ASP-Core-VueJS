@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Authorization.IAuthorizationService authService
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,6 +25,14 @@
         <div id="navbarBasicExample" class="navbar-menu">
 
             <div class="navbar-end">
+                @await Component.InvokeAsync("Cart", new { view = "Small" })
+
+                @if ((await authService.AuthorizeAsync(User, null, "Admin")).Succeeded)
+                {
+                    <div class="navbar-item">
+                        <a asp-page="/Admin/Index">Admin</a>
+                    </div>
+                }
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="navbar-item">
@@ -41,7 +50,7 @@
     </nav>
 
 
-    
+
 
 
 
@@ -53,8 +62,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Shop.UI - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        <div class="content has-text-centered">
+            <p>Copy Rights at my Shop okey(?)</p>
         </div>
     </footer>
 

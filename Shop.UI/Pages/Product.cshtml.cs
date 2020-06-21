@@ -28,7 +28,7 @@ namespace Shop.UI.Pages
 
         public async Task<IActionResult> OnGet(string name)
         {
-            Product = await new GetProduct(_ctx).Do(name.Replace("-", " "));
+            Product = await new GetProduct(_ctx).Do(name);
             if (Product == null)
                 return RedirectToPage("Index");
             else

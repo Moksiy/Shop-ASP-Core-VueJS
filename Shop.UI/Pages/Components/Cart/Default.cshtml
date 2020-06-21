@@ -4,13 +4,25 @@
 }
 
     <div>
-        <h2>Big Cart Component</h2>
+        <p class="title">Корзина</p>
         @foreach (var product in Model)
         {
-            <p>@product.Name</p>
-            <p>@product.Value</p>
-            <p>@product.Qty</p>
-            <p>@product.StockID</p>
+            <article class="media">
+                <figure class="media-left">
+                    <p class="image is-128x128">
+                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                    </p>
+                </figure>
+                <div class="media-content">
+                    <div class="content">
+                        <p class="title">@product.Name</p>
+                        <div class="level">
+                            <div class="level-item"><p class="subtitle">x @product.Qty</p></div>
+                            <div class="level-item"><p class="subtitle">@product.Value</p></div>
+                        </div>
+                    </div>                    
+                </div>
+            </article>
             <hr />
         }
     </div>

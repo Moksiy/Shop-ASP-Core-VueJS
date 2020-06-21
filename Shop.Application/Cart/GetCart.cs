@@ -25,6 +25,7 @@ namespace Shop.Application.Cart
         {
             public string Name { get; set; }
             public string Value { get; set; }
+            public decimal RealValue { get; set; }
             public int Qty { get; set; }
             public int StockID { get; set; }
         }
@@ -47,6 +48,7 @@ namespace Shop.Application.Cart
                 {
                     Name = x.Product.Name,
                     Value = $"{x.Product.Value:N2}₽",
+                    RealValue = x.Product.Value,
                     StockID = x.ID,
                 }).ToList();
 
