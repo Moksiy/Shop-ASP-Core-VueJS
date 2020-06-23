@@ -22,11 +22,11 @@ namespace Shop.UI.Pages
         [BindProperty]
         public CreateProduct.Request Product { get; set; }        
 
-        public IEnumerable<GetProducts.ProductViewModel> Products { get; set; }
+        public IEnumerable<Application.Products.GetProducts.ProductViewModel> Products { get; set; }
 
         public void OnGet()
         {
-            Products = new GetProducts(_ctx).Do();
+            Products = new Application.Products.GetProducts(_ctx).Do();
         }
     }
 }

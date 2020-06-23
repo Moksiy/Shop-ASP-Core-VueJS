@@ -22,7 +22,7 @@ namespace Shop.UI.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult GetProducts() => Ok(new GetProducts(_ctx).Do());
+        public IActionResult GetProducts() => Ok(new Application.Products.GetProducts(_ctx).Do());
 
         [HttpGet("{id}")]
         public IActionResult GetProduct(int id) => Ok(new GetProduct(_ctx).Do(id));
