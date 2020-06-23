@@ -73,7 +73,7 @@ namespace Shop.UI
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddTransient<CreateUser>();
+            services.AddApplicationServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
