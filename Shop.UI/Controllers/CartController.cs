@@ -53,7 +53,7 @@ namespace Shop.UI.Controllers
         {
             string total = getCart.Do().Sum(x => x.RealValue * x.Qty).ToString();
 
-            return PartialView("_Small", total);
+            return PartialView("_Small", $"{total:N2}₽");
         }
 
 
