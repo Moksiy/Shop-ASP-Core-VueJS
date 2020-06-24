@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Shop.UI.Pages.Shared
 {
-    public class SmallModel : PageModel
+    public class _SmallModel : PageModel
     {
         public void OnGet()
         {

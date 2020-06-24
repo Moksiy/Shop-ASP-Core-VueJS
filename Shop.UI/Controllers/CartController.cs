@@ -51,9 +51,9 @@ namespace Shop.UI.Controllers
         [HttpGet]
         public IActionResult GetCartNav([FromServices] GetCart getCart)
         {
-            var total = getCart.Do().Sum(x => x.RealValue * x.Qty);
+            string total = getCart.Do().Sum(x => x.RealValue * x.Qty).ToString();
 
-            return PartialView("Components/Cart/Small", total);
+            return PartialView("_Small", total);
         }
 
 
