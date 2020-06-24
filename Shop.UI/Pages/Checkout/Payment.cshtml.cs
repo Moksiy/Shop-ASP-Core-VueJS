@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Application.Cart;
 using Shop.Application.Orders;
 using Shop.Database;
+using GetOrderCart = Shop.Application.Cart.GetOrder;
 
 namespace Shop.UI.Pages.Checkout
 {
@@ -18,9 +17,9 @@ namespace Shop.UI.Pages.Checkout
         {
             _ctx = ctx;
         }
-        public IActionResult OnGet()
+        public IActionResult OnGet([FromServices] GetCustomerInformation getCustomerInformation)
         {
-            var information = new GetCustomerInformation(HttpContext.Session).Do();
+            var information = getCustomerInformation.Do();
 
             if (information == null)
                 return RedirectToPage("/Checkout/CustomerInformation");
@@ -28,9 +27,9 @@ namespace Shop.UI.Pages.Checkout
                 return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost([FromServices] GetOrderCart getOrder)
         {
-            var CartOrder = new Application.Cart.GetOrder(HttpContext.Session, _ctx).Do();
+            var CartOrder = getOrder.Do();
 
             var sessionID = HttpContext.Session.Id;
 

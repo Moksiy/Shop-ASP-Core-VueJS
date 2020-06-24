@@ -10,17 +10,18 @@ using System.Linq;
 using Shop.Database;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using Shop.Application.Infrastructure;
 
 namespace Shop.Application.Cart
 {
     public class AddToCart
     {
-        private readonly ISession _session;
+        private readonly ISessionManager _sessionManager;
         private readonly ApplicationDBContext _ctx;
 
-        public AddToCart(ISession session, ApplicationDBContext ctx)
+        public AddToCart(ISessionManager sessionManager, ApplicationDBContext ctx)
         {
-            _session = session;
+            _sessionManager = sessionManager;
             _ctx = ctx;
         }
 
@@ -32,7 +33,7 @@ namespace Shop.Application.Cart
 
         public async Task<bool> Do(Request request)
         {
-            var stockOnHold = _ctx.StockOnHolds.Where(x => x.SessionID == _session.Id).ToList();
+            var stockOnHold = _ctx.StockOnHolds.Where(x => x.SessionID == _sessionManager.GetId()).ToList();
 
             var stockToHold = _ctx.Stock.Where(x => x.ID == request.StockID).FirstOrDefault();
 
@@ -48,7 +49,7 @@ namespace Shop.Application.Cart
                 _ctx.StockOnHolds.Add(new StockOnHold
                 {
                     StockID = stockToHold.ID,
-                    SessionID = _session.Id,
+                    SessionID = _sessionManager.GetId(),
                     Qty = request.Qty,
                     ExpiryDate = DateTime.Now.AddMinutes(20)
                 });
@@ -62,9 +63,11 @@ namespace Shop.Application.Cart
 
             await _ctx.SaveChangesAsync();
 
-            var cartList = new List<CartProduct>();
+            _sessionManager.AddProduct(request.StockID, request.Qty);
 
-            var stringObject = _session.GetString("cart");
+            /*//var cartList = new List<CartProduct>();
+
+            var stringObject = _sessionManager.GetString("cart");
 
             if (!string.IsNullOrEmpty(stringObject))
             {
@@ -86,7 +89,7 @@ namespace Shop.Application.Cart
 
             stringObject = JsonConvert.SerializeObject(cartList);
 
-            _session.SetString("cart", stringObject);
+            _sessionManager.SetString("cart", stringObject);*/
 
             return true;
         }

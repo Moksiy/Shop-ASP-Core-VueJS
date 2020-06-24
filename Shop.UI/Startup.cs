@@ -10,8 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Shop.Application.Infrastructure;
 using Shop.Application.UsersAdmin;
 using Shop.Database;
+using Shop.UI.Infrastructure;
 using Shop.UI.Middleware;
 using Stripe;
 
@@ -28,6 +30,8 @@ namespace Shop.UI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
 
@@ -66,9 +70,11 @@ namespace Shop.UI
 
             services.AddSession(options =>
             {
-                options.Cookie.Name = "Cart";
+                options.Cookie.Name = "cart";
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
             });
+
+            services.AddScoped<ISessionManager, SessionManager>();            
 
             services.AddControllersWithViews();
             services.AddRazorPages();
