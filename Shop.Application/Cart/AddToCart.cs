@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using Shop.Database;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Shop.Application.Cart
 {
@@ -38,18 +39,23 @@ namespace Shop.Application.Cart
             if (stockToHold.Qty < request.Qty)
                 return false;
 
-
-            _ctx.StockOnHolds.Add(new StockOnHold
+            if (stockOnHold.Any(x => x.StockID == request.StockID))
             {
-                StockID = stockToHold.ID,
-                SessionID = _session.Id,
-                Qty = request.Qty,
-                ExpiryDate = DateTime.Now.AddMinutes(20)
-            });
-
+                stockOnHold.Find(x => x.StockID == request.StockID).Qty += request.Qty;
+            }
+            else
+            {
+                _ctx.StockOnHolds.Add(new StockOnHold
+                {
+                    StockID = stockToHold.ID,
+                    SessionID = _session.Id,
+                    Qty = request.Qty,
+                    ExpiryDate = DateTime.Now.AddMinutes(20)
+                });
+            }
             stockToHold.Qty -= request.Qty;
 
-            foreach(var stock in stockOnHold)
+            foreach (var stock in stockOnHold)
             {
                 stock.ExpiryDate = DateTime.Now.AddMinutes(20);
             }
