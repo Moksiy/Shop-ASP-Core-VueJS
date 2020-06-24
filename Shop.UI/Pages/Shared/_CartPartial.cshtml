@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Shop.Application.Cart.GetCart.Response>
+
+
+<div class="column is-8 is-offset-2" id="cart-main">
+    @foreach (var product in Model)
+    {
+        <div class="level">
+            <div class="level-item">
+                <figure class="image is-128x128">
+                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                </figure>
+            </div>
+            <div class="level-item">
+                <p class="title">
+                    @product.Name
+                </p>
+            </div>
+            <div class="level-item">
+                <div class="columns is-gapless has-text-centered is-mobile is-multiline">
+                    <div class="column">
+                        <button class="button" type="button"
+                                onclick="removeOneFromCart(event)"
+                                data-stock-id="@product.StockID">
+                            -
+                        </button>
+                    </div>
+                    <div class="column align-self-center" id="stock-qty-@product.StockID">
+                        @product.Qty
+                    </div>
+                    <div class="column">
+                        <button class="button" type="button"
+                                onclick="addOneToCart(event)"
+                                data-stock-id="@product.StockID">
+                            +
+                        </button>
+                    </div>
+                    <div class="column is-12">
+                        <a class="has-text-danger"
+                           onclick="removeAllFromCart(event)"
+                           data-stock-id="@product.StockID">Удалить</a>
+                    </div>
+                </div>
+            </div>
+            <div class="level-item">
+                <p class="subtitle">
+                    @product.Value
+                </p>
+            </div>
+        </div>
+        <hr />
+    }
+    <div class="has-text-right">
+        <a class="button is-text" asp-page="/Index">Назад за покупками</a>
+        @if (Model.Count() > 0)
+        {
+            <a class="button is-success" asp-page="/Checkout/CustomerInformation">Оплатить</a>
+        }
+    </div>
+</div>

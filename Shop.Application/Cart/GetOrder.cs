@@ -1,25 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Shop.Application.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Shop.Domain.Infrastructure;
 using Shop.Database;
-using Shop.Domain.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Shop.Application.Cart
 {
     public class GetOrder
     {
         private readonly ISessionManager _sessionManager;
-        private readonly ApplicationDBContext _ctx;
 
-        public GetOrder(ISessionManager sessionManager, ApplicationDBContext ctx)
+        public GetOrder(ISessionManager sessionManager)
         {
             _sessionManager = sessionManager;
-            _ctx = ctx;
         }
 
         public class Response
@@ -51,25 +44,15 @@ namespace Shop.Application.Cart
 
         public Response Do()
         {
-            var cart = _sessionManager.GetCart();
-
-            var itemsInList = cart.Select(x => x.StockID).ToList();
-
-            var listOfProducts = _ctx.Stock
-                .Include(x => x.Product)
-                .Where(x => itemsInList.Contains(x.ID))
-                .Select(x => new Product
+            var listOfProducts = _sessionManager
+                .GetCart(x => new Product
                 {
                     ProductID = x.ProductID,
-                    StockID = x.ID,
-                    Value = (int)(x.Product.Value * 100),
-                }).ToList();
+                    StockID = x.StockID,
+                    Value = (int)(x.Value * 100),
+                    Qty = x.Qty
+                });
 
-            listOfProducts = listOfProducts.Select(x =>
-            {
-                x.Qty = cart.FirstOrDefault(y => y.StockID == x.StockID).Qty;
-                return x;
-            }).ToList();
 
             var customerInformation = _sessionManager.GetCustomerInformation();
 

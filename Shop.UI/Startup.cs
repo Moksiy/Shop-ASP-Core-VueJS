@@ -1,21 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Shop.Application.Infrastructure;
+using Shop.Domain.Infrastructure;
 using Shop.Application.UsersAdmin;
 using Shop.Database;
 using Shop.UI.Infrastructure;
 using Shop.UI.Middleware;
 using Stripe;
+using Shop.Application.Cart;
 
 namespace Shop.UI
 {
@@ -74,6 +71,7 @@ namespace Shop.UI
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
             });
 
+            services.AddTransient<IStockManager, StockManager>();
             services.AddScoped<ISessionManager, SessionManager>();            
 
             services.AddControllersWithViews();

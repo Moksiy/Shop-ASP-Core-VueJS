@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Shop.Application.Infrastructure;
-using Shop.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using Shop.Domain.Infrastructure;
+
 
 namespace Shop.Application.Cart
 {
