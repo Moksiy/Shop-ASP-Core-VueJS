@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Database;
+using Shop.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +10,21 @@ namespace Shop.Application.Products
 {
     public class GetProducts
     {
-        private readonly ApplicationDBContext _ctx;
+        private readonly IProductManager _productManager;
 
-        public GetProducts(ApplicationDBContext ctx)
+        public GetProducts(IProductManager productManager)
         {
-            _ctx = ctx;
+            _productManager = productManager;
         }
 
         public IEnumerable<ProductViewModel> Do() =>
-            _ctx.Products
-            .Include(x => x.Stock)
-            .Select(x => new ProductViewModel
+            _productManager.GetProductsWithStock(x => new ProductViewModel
             {
                 Name = x.Name,
                 Description = x.Description,
-                Value = $"{x.Value:N2}₽",
+                Value = x.Value.GetValueString(),
                 StockCount = x.Stock.Sum(y => y.Qty)
-            })
-            .ToList();
+            });
 
         public class ProductViewModel
         {

@@ -1,4 +1,5 @@
 ﻿using Shop.Database;
+using Shop.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +11,16 @@ namespace Shop.Application.StockAdmin
 {
     public class DeleteStock
     {
-        private readonly ApplicationDBContext _ctx;
+        private readonly IStockManager _stockManager;
 
-        public DeleteStock(ApplicationDBContext ctx)
+        public DeleteStock(IStockManager stockManager)
         {
-            _ctx = ctx;
+            _stockManager = stockManager;
         }
 
-        public async Task<bool> Do(int id)
-        {
-            var stock = _ctx.Stock.FirstOrDefault(x => x.ID == id);
-
-            _ctx.Stock.Remove(stock);
-
-            await _ctx.SaveChangesAsync();
-
-            return true;
+        public Task<int> Do(int id)
+        {           
+            return _stockManager.DeleteStock(id);
         }
     }
 }

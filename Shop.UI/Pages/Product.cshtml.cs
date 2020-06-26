@@ -14,21 +14,16 @@ namespace Shop.UI.Pages
 {
     public class ProductModel : PageModel
     {
-        private readonly ApplicationDBContext _ctx;
-
-        public ProductModel(ApplicationDBContext ctx)
-        {
-            _ctx = ctx;
-        }
-
         [BindProperty]
         public AddToCart.Request CartViewModel { get; set; }      
 
         public GetProduct.ProductViewModel Product { get; set; }
 
-        public async Task<IActionResult> OnGet(string name)
+        public async Task<IActionResult> OnGet(
+            string name,
+            [FromServices] GetProduct getProduct)
         {
-            Product = await new GetProduct(_ctx).Do(name);
+            Product = await getProduct.Do(name);
             if (Product == null)
                 return RedirectToPage("Index");
             else

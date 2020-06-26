@@ -11,18 +11,13 @@ namespace Shop.UI.Pages
 {
     public class OrderModel : PageModel
     {
-        private readonly ApplicationDBContext _ctx;
-
-        public OrderModel(ApplicationDBContext ctx)
-        {
-            _ctx = ctx;
-        }
-
         public GetOrder.Response Order { get; set; }
 
-        public void OnGet(string reference)
+        public void OnGet(
+            string reference,
+            [FromServices] GetOrder getOrder)
         {
-            Order = new GetOrder(_ctx).Do(reference);
+            Order = getOrder.Do(reference);
         }
     }
 }

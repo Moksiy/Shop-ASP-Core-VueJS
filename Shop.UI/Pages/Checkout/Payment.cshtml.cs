@@ -11,12 +11,6 @@ namespace Shop.UI.Pages.Checkout
 {
     public class PaymentModel : PageModel
     {
-        private readonly ApplicationDBContext _ctx;
-
-        public PaymentModel(ApplicationDBContext ctx)
-        {
-            _ctx = ctx;
-        }
         public IActionResult OnGet([FromServices] GetCustomerInformation getCustomerInformation)
         {
             var information = getCustomerInformation.Do();
@@ -27,13 +21,15 @@ namespace Shop.UI.Pages.Checkout
                 return Page();
         }
 
-        public async Task<IActionResult> OnPost([FromServices] GetOrderCart getOrder)
+        public async Task<IActionResult> OnPost(
+            [FromServices] GetOrderCart getOrder,
+            [FromServices] CreateOrder createOrder)
         {
             var CartOrder = getOrder.Do();
 
             var sessionID = HttpContext.Session.Id;
 
-            await new CreateOrder(_ctx).Do(new CreateOrder.Request
+            await createOrder.Do(new CreateOrder.Request
             {              
                 StripeReference = "",
                 SessionID = sessionID,

@@ -4,25 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shop.Database;
+using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
 
 namespace Shop.Application.ProductsAdmin
 {
     public class DeleteProduct
     {
-        private ApplicationDBContext _context;
+        private readonly IProductManager _productManager;
 
-        public DeleteProduct(ApplicationDBContext context)
+        public DeleteProduct(IProductManager productManager)
         {
-            _context = context;
+            _productManager = productManager;
         }
 
-        public async Task<bool> Do(int id)
+        public Task<int> Do(int id)
         {
-            var Product = _context.Products.FirstOrDefault(x => x.ID == id);
-            _context.Products.Remove(Product);
-            await _context.SaveChangesAsync();
-            return true;
+            return _productManager.DeleteProduct(id);
         }
     }
 }

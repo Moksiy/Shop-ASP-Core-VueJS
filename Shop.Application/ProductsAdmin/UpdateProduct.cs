@@ -4,28 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shop.Database;
+using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
 
 namespace Shop.Application.ProductsAdmin
 {
     public class UpdateProduct
     {
-        private ApplicationDBContext _context;
+        private readonly IProductManager _productManager;
 
-        public UpdateProduct(ApplicationDBContext context)
+        public UpdateProduct(IProductManager productManager)
         {
-            _context = context;
+            _productManager = productManager;
         }
 
         public async Task<Response> Do(Request request)
         {
-            var product = _context.Products.FirstOrDefault(x => x.ID == request.ID);
+            var product = _productManager.GetProductById(request.ID, x => x);
 
             product.Name = request.Name;
             product.Description = request.Description;
             product.Value = request.Value;
 
-            await _context.SaveChangesAsync();
+            await _productManager.UpdateProduct(product);
+
             return new Response
             {
                 ID = product.ID,

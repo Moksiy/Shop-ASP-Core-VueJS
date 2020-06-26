@@ -1,4 +1,5 @@
 ﻿using Shop.Database;
+using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,15 @@ namespace Shop.Application.Orders
 {
     public class CreateOrder
     {
-        private readonly ApplicationDBContext _ctx;
+        private readonly IOrderManager _orderManager;
+        private readonly IStockManager _stockManager;
 
-        public CreateOrder(ApplicationDBContext ctx)
+        public CreateOrder(
+            IOrderManager orderManager,
+            IStockManager stockManager)
         {
-            _ctx = ctx;
+            _orderManager = orderManager;
+            _stockManager = stockManager;
         }
 
         public class Request
@@ -41,12 +46,6 @@ namespace Shop.Application.Orders
 
         public async Task<bool> Do(Request request)
         {
-            var stockOnHold = _ctx.StockOnHolds
-                                 .Where(x => x.SessionID == request.SessionID)
-                                 .ToList();
-
-            _ctx.StockOnHolds.RemoveRange(stockOnHold);
-
             var order = new Order
             {
                 StripeReference = "",
@@ -67,9 +66,16 @@ namespace Shop.Application.Orders
                 }).ToList()
             };
 
-            _ctx.Orders.Add(order);
+            var success = await _orderManager.CreateOrder(order) > 0;
 
-            return await _ctx.SaveChangesAsync() > 0;
+            if (success)
+            {
+                await _stockManager.RemoveStockFromHold(request.SessionID);
+               
+                return true;
+            }
+
+            return false;
         }
 
         public string CreateOrderReference()
@@ -82,7 +88,7 @@ namespace Shop.Application.Orders
             {
                 for (int i = 0; i < result.Length; i++)
                     result[i] = chars[random.Next(chars.Length)];
-            } while (_ctx.Orders.Any(x => x.OrderRef == new string(result)));
+            } while (_orderManager.OrderReferenceExists(new string(result)));
 
             return new string(result);
         }

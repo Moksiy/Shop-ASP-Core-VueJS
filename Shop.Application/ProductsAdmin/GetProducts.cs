@@ -1,4 +1,5 @@
 ﻿using Shop.Database;
+using Shop.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +9,20 @@ namespace Shop.Application.ProductsAdmin
 {
     public class GetProducts
     {
-        private readonly ApplicationDBContext _ctx;
+        private readonly IProductManager _productManager;
 
-        public GetProducts(ApplicationDBContext ctx)
+        public GetProducts(IProductManager productManager)
         {
-            _ctx = ctx;
+            _productManager = productManager;
         }
 
-        public IEnumerable<ProductViewModel> Do() => _ctx.Products.ToList().Select(x => new ProductViewModel
-        {
-            ID = x.ID,
-            Name = x.Name,
-            Value = x.Value
-        });
+        public IEnumerable<ProductViewModel> Do() =>
+            _productManager.GetProductsWithStock(x => new ProductViewModel
+            {
+                ID = x.ID,
+                Name = x.Name,
+                Value = x.Value
+            }); 
 
         public class ProductViewModel
         {

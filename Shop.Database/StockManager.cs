@@ -6,6 +6,7 @@ using Shop.Database;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Infrastructure;
+using System.Collections.Generic;
 
 namespace Shop.Application.Cart
 {
@@ -16,6 +17,29 @@ namespace Shop.Application.Cart
         public StockManager(ApplicationDBContext ctx)
         {
             _ctx = ctx;
+        }
+
+        public Task<int> CreateStock(Stock stock)
+        {
+            _ctx.Stock.Add(stock);
+
+            return _ctx.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteStock(int id)
+        {
+            var stock = _ctx.Stock.FirstOrDefault(x => x.ID == id);
+
+            _ctx.Stock.Remove(stock);
+
+            return _ctx.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateStockRange(List<Stock> stockList)
+        {
+            _ctx.Stock.UpdateRange(stockList);
+
+            return _ctx.SaveChangesAsync();
         }
 
         public bool EnoughStock(int stockId, int qty)
@@ -61,6 +85,17 @@ namespace Shop.Application.Cart
             return _ctx.SaveChangesAsync();
         }
 
+        public Task RemoveStockFromHold(string sessionID)
+        {
+            var stockOnHold = _ctx.StockOnHolds
+                .Where(x => x.SessionID == sessionID)
+                .ToList();
+
+            _ctx.StockOnHolds.RemoveRange(stockOnHold);
+
+            return _ctx.SaveChangesAsync();
+        }
+
         public Task RemoveStockFromHold(int stockID, int qty, string sessionID)
         {
             var stockOnHold = _ctx.StockOnHolds
@@ -78,6 +113,26 @@ namespace Shop.Application.Cart
             }
 
             return _ctx.SaveChangesAsync();
+        }
+
+        public Task RetriveExpiredStockOnHold()
+        {
+
+            var stockOnHold = _ctx.StockOnHolds.Where(x => x.ExpiryDate < DateTime.Now).ToList();
+
+            if (stockOnHold.Count > 0)
+            {
+                var stockToReturn = _ctx.Stock.Where(x => stockOnHold.Any(y => y.StockID == x.ID)).ToList();
+
+                foreach (var stock in stockToReturn)
+                    stock.Qty += stockOnHold.FirstOrDefault(x => x.StockID == stock.ID).Qty;
+
+                _ctx.StockOnHolds.RemoveRange(stockOnHold);
+
+                return _ctx.SaveChangesAsync();
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

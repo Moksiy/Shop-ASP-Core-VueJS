@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Shop.Database;
+using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
 
 namespace Shop.Application.ProductsAdmin
 {
     public class CreateProduct
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IProductManager _productManager;
 
-        public CreateProduct(ApplicationDBContext context)
+        public CreateProduct(IProductManager productManager)
         {
-            _context = context;
+            _productManager = productManager;
         }
 
         public async Task<Response> Do(Request request)
@@ -25,9 +26,8 @@ namespace Shop.Application.ProductsAdmin
                 Value = request.Value
             };
 
-            _context.Products.Add(product);
-
-            await _context.SaveChangesAsync();
+            if (await _productManager.Createproduct(product) <= 0)
+                throw new Exception("Failed to create product");
 
             return new Response
             {

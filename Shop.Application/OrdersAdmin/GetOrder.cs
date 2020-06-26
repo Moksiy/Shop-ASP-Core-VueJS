@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Database;
+using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ namespace Shop.Application.OrdersAdmin
 {
     public class GetOrder
     {
-        private readonly ApplicationDBContext _ctx;
+        private readonly IOrderManager _orderManager;
 
-        public GetOrder(ApplicationDBContext ctx)
+        public GetOrder(IOrderManager orderManager)
         {
-            _ctx = ctx;
+            _orderManager = orderManager;
         }
 
         public class Response
@@ -46,33 +47,29 @@ namespace Shop.Application.OrdersAdmin
         }
 
         public Response Do(int id) =>
-            _ctx.Orders
-            .Where(x => x.ID == id)
-            .Include(x => x.OrderStocks)
-            .ThenInclude(x => x.Stock)
-            .ThenInclude(x => x.Product)
-            .Select(x => new Response
-            {
-                ID = x.ID,
-                OrderRef = x.OrderRef,
-                StripeReference = x.StripeReference,
-
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Email = x.Email,
-                PhoneNumber = x.PhoneNumber,
-                Address1 = x.Address1,
-                Address2 = x.Address2,
-                City = x.City,
-                PostCode = x.PostCode,
-
-                Products = (ICollection<Product>)x.OrderStocks.Select(y => new Product 
+            _orderManager.GetOrderById(id,
+                x => new Response
                 {
-                    Name = y.Stock.Product.Name,
-                    Description = y.Stock.Product.Description,
-                    Qty = y.Qty,
-                    StockDescription = y.Stock.Description
-                })
-            }).FirstOrDefault();
+                    ID = x.ID,
+                    OrderRef = x.OrderRef,
+                    StripeReference = x.StripeReference,
+
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    PhoneNumber = x.PhoneNumber,
+                    Address1 = x.Address1,
+                    Address2 = x.Address2,
+                    City = x.City,
+                    PostCode = x.PostCode,
+
+                    Products = (ICollection<Product>)x.OrderStocks.Select(y => new Product
+                    {
+                        Name = y.Stock.Product.Name,
+                        Description = y.Stock.Product.Description,
+                        Qty = y.Qty,
+                        StockDescription = y.Stock.Description
+                    })
+                });
     }
 }

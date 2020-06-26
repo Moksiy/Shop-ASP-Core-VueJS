@@ -1,5 +1,6 @@
 ﻿using Shop.Database;
 using Shop.Domain.Enums;
+using Shop.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Shop.Application.OrdersAdmin
 {
     public class GetOrders
     {
-        private readonly ApplicationDBContext _ctx;
+        private readonly IOrderManager _orderManager;
 
-        public GetOrders(ApplicationDBContext ctx)
+        public GetOrders(IOrderManager orderManager)
         {
-            _ctx = ctx;
+            _orderManager = orderManager;
         }
 
         public class Response
@@ -24,14 +25,12 @@ namespace Shop.Application.OrdersAdmin
         }
 
         public IEnumerable<Response> Do(int status) =>
-            _ctx.Orders
-            .Where(x => x.Status == (OrderStatus)status)
-            .Select(x => new Response
-            {
-                ID = x.ID,
-                OrderRef = x.OrderRef,
-                Email = x.Email
-            })
-            .ToList();
+            _orderManager.GetOrdersByStatus((OrderStatus)status,
+                x => new Response
+                {
+                    ID = x.ID,
+                    OrderRef = x.OrderRef,
+                    Email = x.Email
+                });
     }
 }
