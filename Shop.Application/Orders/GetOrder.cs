@@ -3,6 +3,7 @@ using Shop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Shop.Application.Orders
 {
@@ -41,10 +42,12 @@ namespace Shop.Application.Orders
             public string StockDescription { get; set; }
         }
 
-        public Response Do(string reference) =>
-            _orderManager.GetOrderByReference(reference, Projection); 
+        public Response Do(string reference)
+        {
+            return _orderManager.GetOrderByReference(reference, Projection);
+        }
 
-        private static readonly Func<Order, Response> Projection = (order) =>
+        private static readonly Expression<Func<Order, Response>> Projection = (order) =>
         new Response
         {
             OrderRef = order.OrderRef,

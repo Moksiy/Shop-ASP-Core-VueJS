@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,10 +33,10 @@ namespace Shop.Database
             .ToList();
         }
 
-        private TResult GetOrder<TResult>(Func<Order, bool> condition, Func<Order, TResult> selector)
+        private TResult GetOrder<TResult>(Expression<Func<Order, bool>> condition, Expression<Func<Order, TResult>> selector)
         {
             return _ctx.Orders
-                .Where(x => condition(x))
+                .Where(condition)
                 .Include(x => x.OrderStocks)
                     .ThenInclude(x => x.Stock)
                         .ThenInclude(x => x.Product)
@@ -43,12 +44,12 @@ namespace Shop.Database
                 .FirstOrDefault();
         }
 
-        public TResult GetOrderById<TResult>(int id, Func<Order, TResult> selector)
+        public TResult GetOrderById<TResult>(int id, Expression<Func<Order, TResult>> selector)
         {
             return GetOrder(order => order.ID == id, selector);
         }
 
-        public TResult GetOrderByReference<TResult>(string reference, Func<Order, TResult> selector)
+        public TResult GetOrderByReference<TResult>(string reference, Expression<Func<Order, TResult>> selector)
         {
             return GetOrder(order => order.OrderRef == reference, selector);
         }

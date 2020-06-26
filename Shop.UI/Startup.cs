@@ -1,4 +1,6 @@
 using System;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -6,8 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Shop.Application.Cart;
 using Shop.Database;
 using Shop.UI.Middleware;
+using Shop.UI.ValidationContexts;
 
 namespace Shop.UI
 {
@@ -27,7 +31,7 @@ namespace Shop.UI
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options => 
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
@@ -36,27 +40,30 @@ namespace Shop.UI
             })
                 .AddEntityFrameworkStores<ApplicationDBContext>();
 
-            services.ConfigureApplicationCookie(options => 
+            services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Accounts/Login";
             });
 
-            services.AddAuthorization(options =>             
+            services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
                 //options.AddPolicy("Manager", policy => policy.RequireClaim("Role", "Manager"));
-                options.AddPolicy("Manager", policy 
-                    => policy.RequireAssertion(context => 
+                options.AddPolicy("Manager", policy
+                    => policy.RequireAssertion(context =>
                     context.User.HasClaim("Role", "Manager")
                     || context.User.HasClaim("Role", "Admin")));
             });
 
-            services.AddMvc().AddRazorPagesOptions(options =>
+            services
+                .AddMvc()
+                .AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeFolder("/Admin");
                 options.Conventions.AuthorizePage("/Admin/ConfigureUsers", "Admin");
             })
-                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0)
+                .AddFluentValidation(x => x.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));           
 
             services.AddDistributedMemoryCache();
 
@@ -64,7 +71,7 @@ namespace Shop.UI
             {
                 options.Cookie.Name = "cart";
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
-            });                                 
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -92,7 +99,7 @@ namespace Shop.UI
             app.UseAuthorization();
             app.UseSession();
             app.UseAuthentication();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
