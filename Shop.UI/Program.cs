@@ -21,35 +21,33 @@ namespace Shop.UI
 
             try
             {
-                using (var scope = host.Services.CreateScope())
+                using var scope = host.Services.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+                context.Database.EnsureCreated();
+
+                if (!context.Users.Any())
                 {
-                    var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
-
-                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                    context.Database.EnsureCreated();
-
-                    if(!context.Users.Any())
+                    var adminUser = new IdentityUser()
                     {
-                        var adminUser = new IdentityUser() 
-                        {
-                            UserName = "Admin"
-                        };
+                        UserName = "Admin"
+                    };
 
-                        var managerUser = new IdentityUser()
-                        {
-                            UserName = "Manager"
-                        };
+                    var managerUser = new IdentityUser()
+                    {
+                        UserName = "Manager"
+                    };
 
-                        userManager.CreateAsync(adminUser, "password").GetAwaiter().GetResult();
-                        userManager.CreateAsync(managerUser, "password").GetAwaiter().GetResult();
+                    userManager.CreateAsync(adminUser, "password").GetAwaiter().GetResult();
+                    userManager.CreateAsync(managerUser, "password").GetAwaiter().GetResult();
 
-                        var adminClaim = new Claim("Role", "Admin");
-                        var managerClaim = new Claim("Role", "Manager");
+                    var adminClaim = new Claim("Role", "Admin");
+                    var managerClaim = new Claim("Role", "Manager");
 
-                        userManager.AddClaimAsync(adminUser, adminClaim).GetAwaiter().GetResult();
-                        userManager.AddClaimAsync(managerUser, managerClaim).GetAwaiter().GetResult();
-                    }
+                    userManager.AddClaimAsync(adminUser, adminClaim).GetAwaiter().GetResult();
+                    userManager.AddClaimAsync(managerUser, managerClaim).GetAwaiter().GetResult();
                 }
             }
             catch(Exception ex)

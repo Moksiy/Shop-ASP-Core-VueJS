@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shop.Database;
-using Shop.Domain.Infrastructure;
+﻿using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -46,7 +44,7 @@ namespace Shop.Application.Orders
         public Response Do(string reference) =>
             _orderManager.GetOrderByReference(reference, Projection); 
 
-        private static Func<Order, Response> Projection = (order) =>
+        private static readonly Func<Order, Response> Projection = (order) =>
         new Response
         {
             OrderRef = order.OrderRef,

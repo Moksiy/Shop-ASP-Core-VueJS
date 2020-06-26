@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shop.Database;
-using Shop.Domain.Infrastructure;
+﻿using Shop.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;

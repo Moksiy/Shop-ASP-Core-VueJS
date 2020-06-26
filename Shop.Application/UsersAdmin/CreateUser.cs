@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Shop.Domain.Infrastructure;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -6,9 +6,9 @@ namespace Shop.Application.UsersAdmin
 {
     public class CreateUser
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserManager _userManager;
 
-        public CreateUser(UserManager<IdentityUser> userManager)
+        public CreateUser(IUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -16,20 +16,12 @@ namespace Shop.Application.UsersAdmin
         public class Request
         {
             public string UserName { get; set; }
+            public string Password { get; set; }
         }
 
         public async Task<bool> Do(Request request)
         {
-            var managerUser = new IdentityUser()
-            {
-                UserName = request.UserName
-            };
-
-            await _userManager.CreateAsync(managerUser, "password");
-
-            var managerClaim = new Claim("Role", "Manager");
-
-            await _userManager.AddClaimAsync(managerUser, managerClaim);
+            await _userManager.CreateManagerUser(request.UserName, request.Password);
 
             return true;
         }
