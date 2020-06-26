@@ -1,17 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using Shop.Domain.Models;
-using System.Security.Cryptography.X509Certificates;
-
+﻿using Shop.Domain.Models;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using Shop.Domain.Infrastructure;
-using Newtonsoft.Json.Bson;
 
 namespace Shop.Application.Cart
 {
+    [Service]
     public class AddToCart
     {
         private readonly ISessionManager _sessionManager;

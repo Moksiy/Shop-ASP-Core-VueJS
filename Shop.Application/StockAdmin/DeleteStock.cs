@@ -1,14 +1,9 @@
-﻿
-using Shop.Domain.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
+﻿using Shop.Domain.Infrastructure;
 using System.Threading.Tasks;
 
 namespace Shop.Application.StockAdmin
 {
+    [Service]
     public class DeleteStock
     {
         private readonly IStockManager _stockManager;

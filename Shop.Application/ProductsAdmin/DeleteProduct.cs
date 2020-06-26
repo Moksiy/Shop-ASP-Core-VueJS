@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Threading.Tasks;
 using Shop.Domain.Infrastructure;
-using Shop.Domain.Models;
 
 namespace Shop.Application.ProductsAdmin
 {
+    [Service]
     public class DeleteProduct
     {
         private readonly IProductManager _productManager;

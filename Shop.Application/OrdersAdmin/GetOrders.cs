@@ -1,13 +1,10 @@
-﻿
-using Shop.Domain.Enums;
+﻿using Shop.Domain.Enums;
 using Shop.Domain.Infrastructure;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Shop.Application.OrdersAdmin
 {
+    [Service]
     public class GetOrders
     {
         private readonly IOrderManager _orderManager;

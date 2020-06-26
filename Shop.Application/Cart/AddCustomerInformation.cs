@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Shop.Application.Cart
 {
+    [Service]
     public class AddCustomerInformation
     {
         private readonly ISessionManager _sessionManager;

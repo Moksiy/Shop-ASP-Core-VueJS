@@ -5,6 +5,7 @@ using Shop.Domain.Models;
 
 namespace Shop.Application.ProductsAdmin
 {
+    [Service]
     public class CreateProduct
     {
         private readonly IProductManager _productManager;

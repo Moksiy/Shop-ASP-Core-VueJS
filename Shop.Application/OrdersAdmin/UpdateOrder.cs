@@ -1,13 +1,9 @@
-﻿
-using Shop.Domain.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Shop.Domain.Infrastructure;
 using System.Threading.Tasks;
 
 namespace Shop.Application.OrdersAdmin
 {
+    [Service]
     public class UpdateOrder
     {
         private readonly IOrderManager _orderManager;

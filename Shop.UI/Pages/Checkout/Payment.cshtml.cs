@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Application.Cart;
 using Shop.Application.Orders;
 using Shop.Database;
+using Shop.Domain.Infrastructure;
 using GetOrderCart = Shop.Application.Cart.GetOrder;
 
 namespace Shop.UI.Pages.Checkout
@@ -23,7 +24,8 @@ namespace Shop.UI.Pages.Checkout
 
         public async Task<IActionResult> OnPost(
             [FromServices] GetOrderCart getOrder,
-            [FromServices] CreateOrder createOrder)
+            [FromServices] CreateOrder createOrder,
+            [FromServices] ISessionManager sessionManager)
         {
             var CartOrder = getOrder.Do();
 
@@ -48,6 +50,9 @@ namespace Shop.UI.Pages.Checkout
                     Qty = x.Qty
                 }).ToList()
             });
+
+            sessionManager.ClearCart();
+
             return RedirectToPage("/Index");
         }
     }

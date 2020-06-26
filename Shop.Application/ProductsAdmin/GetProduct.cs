@@ -1,12 +1,8 @@
-﻿
-using Shop.Domain.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Shop.Domain.Infrastructure;
 
 namespace Shop.Application.ProductsAdmin
 {
+    [Service]
     public class GetProduct
     {
         private readonly IProductManager _productManager;

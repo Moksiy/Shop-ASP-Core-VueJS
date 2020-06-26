@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Infrastructure;
 using System.Collections.Generic;
 
-namespace Shop.Application.Cart
+namespace Shop.Database
 {
     public class StockManager : IStockManager
     {

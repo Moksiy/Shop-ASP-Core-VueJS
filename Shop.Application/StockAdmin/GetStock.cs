@@ -1,11 +1,10 @@
 ﻿using Shop.Domain.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Shop.Application.StockAdmin
 {
+    [Service]
     public class GetStock
     {
         private readonly IProductManager _productManager;

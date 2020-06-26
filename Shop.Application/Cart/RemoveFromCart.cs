@@ -1,10 +1,9 @@
-﻿using System.Linq;
-
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Shop.Domain.Infrastructure;
 
 namespace Shop.Application.Cart
 {
+    [Service]
     public class RemoveFromCart
     {
         private readonly ISessionManager _sessionManager;

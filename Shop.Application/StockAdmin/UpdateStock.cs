@@ -1,12 +1,11 @@
 ﻿using Shop.Domain.Infrastructure;
 using Shop.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Shop.Application.StockAdmin
 {
+    [Service]
     public class UpdateStock
     {
         private readonly IStockManager _stockManager;

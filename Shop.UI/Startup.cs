@@ -6,13 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Shop.Domain.Infrastructure;
-using Shop.Application.UsersAdmin;
 using Shop.Database;
-using Shop.UI.Infrastructure;
 using Shop.UI.Middleware;
-using Stripe;
-using Shop.Application.Cart;
 
 namespace Shop.UI
 {
@@ -69,10 +64,7 @@ namespace Shop.UI
             {
                 options.Cookie.Name = "cart";
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
-            });
-
-            services.AddTransient<IStockManager, StockManager>();
-            services.AddScoped<ISessionManager, SessionManager>();            
+            });                                 
 
             services.AddControllersWithViews();
             services.AddRazorPages();
