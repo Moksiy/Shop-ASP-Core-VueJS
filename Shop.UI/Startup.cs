@@ -70,7 +70,7 @@ namespace Shop.UI
             services.AddSession(options =>
             {
                 options.Cookie.Name = "cart";
-                options.Cookie.MaxAge = TimeSpan.FromMinutes(20);
+                options.Cookie.MaxAge = TimeSpan.FromDays(1);
             });
 
             services.AddControllersWithViews();

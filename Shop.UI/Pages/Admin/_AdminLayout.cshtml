@@ -10,11 +10,6 @@
 </head>
 <body>
     <h3 class="title has-text-centered">Панель администратора</h3>
-
-    <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-
-
-
     <div class="container">
         <div class="columns">
             <div class="column is-3">
@@ -31,9 +26,7 @@
                     @if ((await authService.AuthorizeAsync(User, null, "Admin")).Succeeded)
                     {
                         <p class="menu-label"> Меню администратора </p>
-                        <ul class="menu-list">
-                            <li><a asp-page="/Admin/ConfigureUsers">Настройка пользователей</a></li>
-                        </ul>
+
                     }
                     <p class="menu-label"></p>
                     <ul class="menu-list">
@@ -47,9 +40,10 @@
             </div>
         </div>
     </div>
+
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Shop.UI - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        <div class="content has-text-centered">
+            <p>⚠️</p>
         </div>
     </footer>
 

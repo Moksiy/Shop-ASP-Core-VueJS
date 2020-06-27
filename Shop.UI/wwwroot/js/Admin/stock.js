@@ -3,6 +3,7 @@
     data: {
         products: [],
         selectedProduct: null,
+        flag: false,
         newStock: {
             productId: 0,
             description: "Bla-Bla-Bla",
@@ -28,26 +29,36 @@
         },
         updateStock() {
             this.loading = true;
-            axios.put('/stocks', {
-                stock: this.selectedProduct.stock.map(x => {
-                    return {
-                        id: x.id,
-                        description: x.description,
-                        qty: x.qty,
-                        productId: this.selectedProduct.id
-                    };
+            flag = false;
+
+            this.selectedProduct.stock.map(x => {
+                if (x.description == "" || String(x.qty).length == 0) {
+                    flag = true;
+                }
+            });
+            if (!flag) {
+                axios.put('/stocks', {
+                    stock: this.selectedProduct.stock.map(x => {
+                        return {
+                            id: x.id,
+                            description: x.description,
+                            qty: x.qty,
+                            productId: this.selectedProduct.id
+                        };
+                    })
                 })
-            })
-                .then(res => {
-                    console.log(res);
-                    this.selectedProduct.stock.splice(index, 1);
-                })
-                .catch(err => {
-                    console.log(err.response);
-                })
-                .then(() => {
-                    this.loading = false;
-                });
+                    .then(res => {
+                        this.selectedProduct.stock.splice(index, 1);
+                    })
+                    .catch(err => {
+                        console.log(err.response);
+                    })
+                    .then(() => {
+                        this.loading = false;
+                    });
+            } else {
+                alert('Не все поля заполнены');
+            }
         },
         deleteStock(id, index) {
             this.loading = true;
@@ -63,17 +74,22 @@
                 });
         },
         addStock() {
-            this.loading = true;
-            axios.post('/stocks', this.newStock)
-                .then(res => {
-                    this.selectedProduct.stock.push(res.data);
-                })
-                .catch(err => {
-                    console.log(err.response);
-                })
-                .then(() => {
-                    this.loading = false;
-                });
+            if (this.newStock.description != ""
+                && this.newStock.qty != "") {
+                this.loading = true;
+                axios.post('/stocks', this.newStock)
+                    .then(res => {
+                        this.selectedProduct.stock.push(res.data);
+                    })
+                    .catch(err => {
+                        console.log(err.response);
+                    })
+                    .then(() => {
+                        this.loading = false;
+                    });
+            } else {
+                alert('Заполните все поля');
+            }
         },
         selectProduct(product) {
             this.selectedProduct = product;

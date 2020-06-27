@@ -51,34 +51,45 @@
                 });
         },
         createProduct() {
-            this.loading = true;
-            axios.post('/products', this.productModel)
-                .then(res => {
-                    console.log(res.data);
-                    this.products.push(res.data);
-                })
-                .catch(err => {
-                    console.log(err.response);
-                })
-                .then(() => {
-                    this.loading = false;
-                    this.editing = false;
-                });
+            if (this.productModel.name != ""
+                && this.productModel.description != ""
+                && this.productModel.value != "") {
+                this.loading = true;
+                axios.post('/products', this.productModel)
+                    .then(res => {
+                        this.products.push(res.data);
+                    })
+                    .catch(err => {
+                        console.log(err.response);
+                    })
+                    .then(() => {
+                        this.loading = false;
+                        this.editing = false;
+                    });
+            } else {
+                alert('Заполните все поля');
+            }
         },
         updateProduct(product) {
-            this.loading = true;
-            axios.put('/products', this.productModel)
-                .then(res => {
-                    console.log(res.data);
-                    this.products.splice(this.objectIndex, 1, res.data);
-                })
-                .catch(err => {
-                    console.log(err.response);
-                })
-                .then(() => {
-                    this.loading = false;
-                    this.editing = false;
-                });
+            if (this.productModel.name != ""
+                && this.productModel.description != ""
+                && this.productModel.value != "") {
+                this.loading = true;
+                axios.put('/products', this.productModel)
+                    .then(res => {
+                        console.log(res.data);
+                        this.products.splice(this.objectIndex, 1, res.data);
+                    })
+                    .catch(err => {
+                        console.log(err.response);
+                    })
+                    .then(() => {
+                        this.loading = false;
+                        this.editing = false;
+                    });
+            } else {
+                alert('Заполните все поля');
+            }
         },
         editProduct(id, index) {
             this.objectIndex = index;

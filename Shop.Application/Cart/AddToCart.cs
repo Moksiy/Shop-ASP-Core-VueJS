@@ -26,6 +26,8 @@ namespace Shop.Application.Cart
         {
             if (!_stockManager.EnoughStock(request.StockID, request.Qty))
                 return false;
+            if (request.Qty <= 0)
+                return false;
 
             await _stockManager
                 .PutStockOnHold(request.StockID, request.Qty, _sessionManager.GetId());

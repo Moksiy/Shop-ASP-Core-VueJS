@@ -39,7 +39,7 @@
         <div class="field">
             <label class="label">Цена товара</label>
             <div class="control">
-                <input class="input" v-model.number="productModel.value" />
+                <input class="input" v-model.number="productModel.value" type="number" />
             </div>
         </div>
         <button class="button is-success" @@click="createProduct" v-if="!productModel.id">Добавить товар</button>

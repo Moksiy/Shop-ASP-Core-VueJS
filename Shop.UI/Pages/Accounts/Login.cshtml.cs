@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,9 @@ namespace Shop.UI.Pages.Accounts
 
         public async Task<IActionResult> OnPost()
         {
+            if (string.IsNullOrWhiteSpace(Input.Username) || string.IsNullOrWhiteSpace(Input.Password))
+                return Page();
+
             var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, false, false);
 
             if (result.Succeeded)

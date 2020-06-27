@@ -1,3 +1,96 @@
-﻿.align-self-center{
-    align-self:center;
+﻿.align-self-center {
+    align-self: center;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: #fafafa;
+    font-family: Trebuchet MS, Helvetica;
+}
+
+#about {
+    text-align: center;
+    font-size: 1.3em;
+    line-height: 40px;
+    margin-bottom: 10px;
+}
+
+    #about > a {
+        color: #FFF
+    }
+
+        #about > a:hover {
+            color: #9b9797;
+            text-decoration: underline;
+        }
+
+        #about > a:not(:last-child) {
+            margin-right: 7%;
+        }
+
+.fixed #about a {
+    color: #343434;
+}
+
+    .fixed #about a:hover {
+        color: #343434;
+    }
+
+#faq {
+    background-color: #FFF;
+    width: 100%;
+    float: left;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+    #faq div {
+        text-align: left;
+        width: 70%;
+        margin-left: 15%;
+        float: left;
+    }
+
+    #faq .heading {
+        font-size: 1.5em;
+        color: #000000;
+    }
+
+    #faq .p {
+        color: #454545;
+    }
+
+
+#faq h5 {
+    font-size: 3em;
+    color: #454545;
+}
+
+#contacts {
+    background-color: rgb(221, 221, 221);
+    width: 100%;
+    float: left;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+    #contacts h5 {
+        font-size: 3em;
+        color: #454545;
+    }
+
+    #contacts div {
+        text-align: left;
+        width: 32%;
+        margin-left: 15%;
+        float: left;
+    }
+
+#otstup {
+    border-top: 2px dashed #e4e3e3;
+    border-bottom: 2px linen #a0a0a0;
 }

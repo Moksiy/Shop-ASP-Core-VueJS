@@ -15,7 +15,7 @@ namespace Shop.UI.Pages
     public class ProductModel : PageModel
     {
         [BindProperty]
-        public AddToCart.Request CartViewModel { get; set; }      
+        public AddToCart.Request CartViewModel { get; set; }
 
         public GetProduct.ProductViewModel Product { get; set; }
 
@@ -32,12 +32,12 @@ namespace Shop.UI.Pages
 
         public async Task<IActionResult> OnPost([FromServices] AddToCart addToCart)
         {
-            var stockAdded = await addToCart.Do(CartViewModel); 
+            var stockAdded = await addToCart.Do(CartViewModel);
 
-            if(stockAdded)
+            if (stockAdded)
                 return RedirectToPage("Cart");
             else
-                return Page();
+                return RedirectToPage("Product");
         }
     }
 }

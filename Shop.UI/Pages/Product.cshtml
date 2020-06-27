@@ -60,7 +60,7 @@
                                                 if (stock.Qty <= 1)
                                                 {
                                                     <p class="help is-danger is-hidden low-stock" id="low-stock-@stock.ID">
-                                                        @(stock.Qty == 0? "Товар закончился :(": "Последнее!")
+                                                        @(stock.Qty == 0 ? "Товар закончился :(" : "Последнее!")
                                                     </p>
                                                 }
                                             }
@@ -74,7 +74,9 @@
                                     <div class="field-body">
                                         <div class="field is-narrow">
                                             <div class="control">
+
                                                 <button type="submit" class="button is-success">Купить</button>
+
                                             </div>
                                         </div>
                                     </div>

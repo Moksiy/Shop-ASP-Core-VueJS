@@ -22,12 +22,33 @@
         <p>
             <button @@click="exitOrder()">Назад</button>
         </p>
-        <p class="title">{{selectedOrder.orderRef}}</p>
-        <p class="subtitle">{{selectedOrder.email}}</p>
-        <button @@click="updateOrder()">Обновить статус</button>
+        <table class="table">
+            <tr>
+                <td>
+                    <p class="title">{{selectedOrder.orderRef}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.firstName}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.lastName}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.email}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.phoneNumber}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.address1}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.address2}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.city}}</p>
+                    <hr />
+                    <p class="subtitle">{{selectedOrder.postCode}}</p>
+                </td>
+            </tr>
+        </table>
+        <button v-if="status < 2" @@click="updateOrder()">Обновить статус</button>
     </div>
 </div>
 
-@section scripts{ 
+@section scripts{
     <script src="~/js/Admin/orders.js"></script>
 }
