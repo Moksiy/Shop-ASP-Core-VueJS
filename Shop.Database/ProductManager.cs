@@ -52,8 +52,7 @@ namespace Shop.Database
         }
 
         public IEnumerable<TResult> GetProductsWithStock<TResult>(
-            Func<Product,
-            TResult> selector)
+            Func<Product, TResult> selector)
         {
             return _ctx.Products
             .Include(x => x.Stock)
